@@ -5,17 +5,36 @@ import matplotlib.pyplot as plt
 
 st.title("📊 Exploratory Data Analysis")
 
-df = pd.read_csv("data/dataset.csv")
+df = pd.read_csv("data/wdi001.csv")
 
+# Dataset Preview
 st.subheader("Dataset Preview")
 st.write(df.head())
 
-st.subheader("Missing Values")
+# Summary Statistics
+st.subheader("Summary Statistics")
+st.write(df.describe())
+
+# Missing Values
+st.subheader("Missing Values per Column")
 st.write(df.isnull().sum())
 
-st.subheader("Correlation Matrix")
+# Correlation Matrix
+st.subheader("Correlation Matrix (Numeric Columns)")
+
 corr = df.select_dtypes(include=['float64', 'int64']).corr()
 
 fig, ax = plt.subplots(figsize=(12, 8))
 sns.heatmap(corr, cmap="coolwarm")
 st.pyplot(fig)
+
+# Feature Distributions
+st.subheader("Feature Distributions (Histograms)")
+
+numeric_cols = df.select_dtypes(include=['float64', 'int64']).columns
+
+for col in numeric_cols[:6]:
+    st.write(f"### Distribution of {col}")
+    fig, ax = plt.subplots()
+    sns.histplot(df[col], kde=True)
+    st.pyplot(fig)
