@@ -2,35 +2,50 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-st.title("🔮 Predict Life Expectancy")
+st.title("🔮 Life Expectancy Prediction App")
 
-# Load model
-model = joblib.load("models/best_random_forest.pkl")
+st.markdown("""
+Enter the required features below to predict **Life Expectancy** for a selected country.
+The model automatically handles scaling and encoding.
+""")
 
-st.write("Enter feature values:")
+# LOAD MODEL
+model = joblib.load("models/life_exp_random_forest.pkl")
 
-# === User Inputs ===
-year = st.number_input("Year", min_value=1900, max_value=2100, step=1)
-gdp_total = st.number_input("GDP Total", min_value=0.0)
-gdp_capita = st.number_input("GDP Per Capita", min_value=0.0)
-primary_school = st.number_input("Primary School Enrollment", min_value=0.0)
-secondary_school = st.number_input("Secondary School Enrollment", min_value=0.0)
-tertiary_school = st.number_input("Tertiary School Enrollment", min_value=0.0)
+# LOAD DATASET TO EXTRACT COUNTRIES
+df = pd.read_csv("data/wdi001.csv", thousands=",")
 
-# Create input DataFrame
-input_df = pd.DataFrame({
-    "Year": [year],
-    "GDP Total": [gdp_total],
-    "GDP Per Capita": [gdp_capita],
-    "Primary School Enrollment": [primary_school],
-    "Secondary School Enrollment": [secondary_school],
-    "Tertiary School Enrollment": [tertiary_school]
-})
+country_list = sorted(df["Country"].dropna().unique().tolist())
 
-st.subheader("📄 Input Summary")
-st.write(input_df)
+# INPUT FORM
+st.subheader("📥 Input Features")
 
-# Predict
-if st.button("Predict"):
+country = st.selectbox("🌍 Country", country_list)
+
+year = st.number_input("📅 Year", min_value=1960, max_value=2025, value=2020)
+
+gdp_total = st.number_input("💰 GDP Total", min_value=0.0, value=5000000000.0)
+gdp_per_capita = st.number_input("💵 GDP Per Capita", min_value=0.0, value=20000.0)
+
+primary = st.number_input("📘 Primary School Enrollment (%)", min_value=0.0, value=95.0)
+secondary = st.number_input("📗 Secondary School Enrollment (%)", min_value=0.0, value=80.0)
+tertiary = st.number_input("📙 Tertiary School Enrollment (%)", min_value=0.0, value=40.0)
+
+# PREDICTION
+if st.button("Predict Life Expectancy"):
+    input_df = pd.DataFrame({
+        "Year": [year],
+        "GDP Total": [gdp_total],
+        "GDP Per Capita": [gdp_per_capita],
+        "Primary School Enrollment": [primary],
+        "Secondary School Enrollment": [secondary],
+        "Tertiary School Enrollment": [tertiary],
+        "Country": [country]
+    })
+
     prediction = model.predict(input_df)[0]
+
     st.success(f"🎯 Predicted Life Expectancy: **{prediction:.2f} years**")
+
+    st.write("Input preview:")
+    st.dataframe(input_df)
