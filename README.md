@@ -28,7 +28,7 @@ The workflow consists of:
 ---
 
 ## 📂 Project Structure
-
+```
 ├── data/
 │   └── wdi001.csv
 │
@@ -48,7 +48,7 @@ The workflow consists of:
 ├── requirements.txt
 ├── 16180.ipynb
 └── README.md
-
+```
 ---
 
 ## 📊 Dataset Description
