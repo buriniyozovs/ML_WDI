@@ -32,9 +32,12 @@ st.pyplot(fig)
 st.subheader("Feature Distributions (Histograms)")
 
 numeric_cols = df.select_dtypes(include=['float64', 'int64']).columns
-numeric_cols = [numeric_cols[:5], 'Life Expectancy']
-for col in numeric_cols[:6]:
+selected = list(numeric_cols[:5])
+if 'Life Expectancy' in df.columns and 'Life Expectancy' not in selected:
+    selected.append('Life Expectancy')
+
+for col in selected:
     st.write(f"### Distribution of {col}")
     fig, ax = plt.subplots()
-    sns.histplot(df[col], kde=True)
+    sns.histplot(df[col].dropna(), kde=True)
     st.pyplot(fig)
