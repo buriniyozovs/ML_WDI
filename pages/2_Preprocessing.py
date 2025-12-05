@@ -29,6 +29,6 @@ st.markdown("""
 ---
 
 ### ✔ Dataset Split  
-- Split into **Training (70%)** and **Test (30%)**  
+- Split into **Training (80%)** and **Test (20%)**  
 - Test set used for final evaluation and comparison of models
 """)
