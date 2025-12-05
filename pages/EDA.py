@@ -32,7 +32,7 @@ st.pyplot(fig)
 st.subheader("Feature Distributions (Histograms)")
 
 numeric_cols = df.select_dtypes(include=['float64', 'int64']).columns
-
+numeric_cols = [numeric_cols[:5], 'Life Expectancy']
 for col in numeric_cols[:6]:
     st.write(f"### Distribution of {col}")
     fig, ax = plt.subplots()
