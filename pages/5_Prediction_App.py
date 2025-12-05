@@ -75,20 +75,3 @@ if st.button("Predict Life Expectancy"):
     comp_df = pd.DataFrame(comp_data)
 
     st.bar_chart(comp_df.set_index("Model"))
-
-    # VISUALIZATION — Prediction Trend for Country
-    st.subheader(f"📈 Life Expectancy Trend for {country}")
-
-    country_hist = df[df["Country"] == country][["Year", "Life Expectancy"]].dropna()
-
-    if len(country_hist) > 0:
-        fig, ax = plt.subplots(figsize=(10, 4))
-        ax.plot(country_hist["Year"], country_hist["Life Expectancy"], marker='o', label="Actual History")
-        ax.axhline(prediction, color="red", linestyle="--", label="Predicted Value")
-        ax.set_title(f"Life Expectancy Trend — {country}")
-        ax.set_xlabel("Year")
-        ax.set_ylabel("Life Expectancy")
-        ax.legend()
-        st.pyplot(fig)
-    else:
-        st.info("No historical life expectancy data available for this country.")
