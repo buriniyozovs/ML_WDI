@@ -58,7 +58,7 @@ if st.button("Predict Life Expectancy"):
 
     prediction = float(selected_model.predict(input_df)[0])   # FIXED
 
-    st.success(f"🎯 **Predicted Life Expectancy:** {prediction:.2f} years")
+    st.success(f"🎯 **Predicted Life Expectancy:** {prediction:.2f}")
     st.write("Input Summary:")
     st.dataframe(input_df)
 
