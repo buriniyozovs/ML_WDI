@@ -40,7 +40,7 @@ primary = st.number_input("📘 Primary School Enrollment (%)", min_value=0.0, v
 secondary = st.number_input("📗 Secondary School Enrollment (%)", min_value=0.0, value=80.0)
 tertiary = st.number_input("📙 Tertiary School Enrollment (%)", min_value=0.0, value=40.0)
 
-# Build input DF with correct columns
+# Build input DF
 input_df = pd.DataFrame({
     "Year": [year],
     "GDP Total": [gdp_total],
@@ -56,8 +56,8 @@ if st.button("Predict Life Expectancy"):
     
     selected_model = models[selected_model_name]
 
-    prediction = selected_model.predict(input_df)[0]
-    
+    prediction = float(selected_model.predict(input_df)[0])   # FIXED
+
     st.success(f"🎯 **Predicted Life Expectancy:** {prediction:.2f} years")
     st.write("Input Summary:")
     st.dataframe(input_df)
@@ -69,7 +69,7 @@ if st.button("Predict Life Expectancy"):
     for name, mdl in models.items():
         comp_data.append({
             "Model": name,
-            "Prediction": mdl.predict(input_df)[0]
+            "Prediction": float(mdl.predict(input_df)[0])   # FIXED
         })
 
     comp_df = pd.DataFrame(comp_data)
