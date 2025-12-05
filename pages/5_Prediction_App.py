@@ -4,22 +4,33 @@ import joblib
 
 st.title("🔮 Predict Life Expectancy")
 
+# Load model
 model = joblib.load("models/best_random_forest.pkl")
 
 st.write("Enter feature values:")
 
-gdp = st.number_input("GDP Total", min_value=0.0)
-population = st.number_input("Population Total", min_value=0.0)
+# === User Inputs ===
+year = st.number_input("Year", min_value=1900, max_value=2100, step=1)
+gdp_total = st.number_input("GDP Total", min_value=0.0)
 gdp_capita = st.number_input("GDP Per Capita", min_value=0.0)
-school_sec = st.number_input("Secondary School Enrollment", min_value=0.0)
+primary_school = st.number_input("Primary School Enrollment", min_value=0.0)
+secondary_school = st.number_input("Secondary School Enrollment", min_value=0.0)
+tertiary_school = st.number_input("Tertiary School Enrollment", min_value=0.0)
 
+# Create input DataFrame
 input_df = pd.DataFrame({
-    "GDP Total": [gdp],
-    "Population Total": [population],
+    "Year": [year],
+    "GDP Total": [gdp_total],
     "GDP Per Capita": [gdp_capita],
-    "Secondary School Enrollment": [school_sec]
+    "Primary School Enrollment": [primary_school],
+    "Secondary School Enrollment": [secondary_school],
+    "Tertiary School Enrollment": [tertiary_school]
 })
 
+st.subheader("📄 Input Summary")
+st.write(input_df)
+
+# Predict
 if st.button("Predict"):
     prediction = model.predict(input_df)[0]
-    st.success(f"Predicted Life Expectancy: {prediction:.2f} years")
+    st.success(f"🎯 Predicted Life Expectancy: **{prediction:.2f} years**")
